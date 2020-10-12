@@ -38,21 +38,22 @@ with open(csv_path) as csvfile:
         month_count += 1 
         total = total + float(row[1])
         
+        # create a list with differences between each month
         if index > 0: 
             monthly_change.append(float(row[1]) - float(bank_list[index - 1][1]))
             total_monthly_change = total_monthly_change + monthly_change[index - 1]
-        if index > 0 and row[1] == max(monthly_change):
-            greatest_increase = monthly_change[index]
-            greatest_month = row[0]
-            print(row[0])
-    # print(monthly_change)
-    # print(total_monthly_change)
+            
+            # find greatest profit increase
+            if monthly_change[index - 1] >= max(monthly_change):
+                greatest_increase = monthly_change[index - 1]
+                greatest_month = row[0]
+            
+            # find greatest profit decrease
+            if monthly_change[index - 1] <= min(monthly_change):
+                greatest_decrease = monthly_change[index - 1]
+                smallest_month = row[0]                
+                
     avg_change = total_monthly_change/(month_count - 1)
-    # greatest_increase = max(monthly_change)
-    print(greatest_increase)
-    # print(greatest_month)
-
-         
         
     print(f'''
 Financial Analysis
@@ -60,12 +61,6 @@ Financial Analysis
 Total Months: {month_count}
 Total: {as_currency(total)}
 Average Change: {as_currency(avg_change)}
-Greatest Increase in Profits:  {as_currency(greatest_increase)}
-Greatest Decrease in Profits:
+Greatest Increase in Profits: {greatest_month}   {as_currency(greatest_increase)}
+Greatest Decrease in Profits: {smallest_month}  {as_currency(greatest_decrease)}
 ''')
-        
-        # if float(row[7]) >= 5:
-        #     print(row)
-        #     # print(f"{row[0]} {row[7]}")
-    
-    
